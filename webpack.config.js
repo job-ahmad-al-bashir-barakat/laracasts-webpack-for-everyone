@@ -1,6 +1,6 @@
-var webpack = require('webpack');
-var path = require('path');
-var glob = require('glob');
+let webpack = require('webpack');
+let path = require('path');
+let glob = require('glob');
 
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let PurifyCSSPlugin = require('purifycss-webpack');
@@ -34,12 +34,35 @@ module.exports = {
                   })
             },
             {
-                test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-                use: [
+                test: /\.css$/,
+                loader: ['css-loader']
+            },
+            {
+                test: /\.(svg|eot|ttf|woff|woff2)$/,
+                loader: 'file-loader',
+                options: {
+                    name: 'fonts/[name].[hash].[ext]'
+                }
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/,
+                loaders: [
                     {
                         loader: 'file-loader',
                         options: {
                             name: 'images/[name].[hash].[ext]'
+                        }
+                    },
+                    {
+                        loader: 'img-loader',
+                        options: {
+                            optipng: {
+                                enabled: false,
+                              },
+                              pngquant: {
+                                quality: '65-90',
+                                speed: 4
+                              },
                         }
                     }
                 ],
