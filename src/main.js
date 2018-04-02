@@ -1,8 +1,11 @@
-import notification from './Notification.js'
+class Form {
 
-notification.log('message to log');
-notification.announce('message to alert');
+    constructor() {
+        let numbers = [5,10,15].map(number => number *2);
 
+        console.log(numbers);
 
+    }
+}
 
-require('./main.css');
+new Form();
