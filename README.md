@@ -1,0 +1,1 @@
+laracasts-webpack-for-everyone
