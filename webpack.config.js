@@ -6,6 +6,8 @@ let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let PurifyCSSPlugin = require('purifycss-webpack');
 let CleanWebpackPlugin = require('clean-webpack-plugin')
 
+let BuildManifestPlugin =  require('./build/plugins/BuildManifestPlugin');
+
 let isProduction = (process.env.NODE_ENV === 'production');
 
 
@@ -93,15 +95,8 @@ module.exports = {
             minimize: isProduction
         }),
 
-        function () {
-            this.plugin('done', stats => {
-                // require file system
-                require('fs').writeFileSync(
-                    path.join(__dirname, 'dist/manifest.json'),
-                    JSON.stringify(stats.toJson().assetsByChunkName)
-                );
-            });
-        }
+        new BuildManifestPlugin(),
+
     ]
 }
 
