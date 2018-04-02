@@ -1,21 +1,28 @@
 var webpack = require('webpack');
 var path = require('path');
 var glob = require('glob');
+
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let PurifyCSSPlugin = require('purifycss-webpack');
+let CleanWebpackPlugin = require('clean-webpack-plugin')
+
 let isProduction = (process.env.NODE_ENV === 'production');
 
 
 module.exports = {
     entry: {
-        app: [
+        main: [
             './src/main.js',
             './src/main.scss'
+        ],
+        vendor: [
+            'jquery',
+            'jqueryui'
         ]
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js'
+        filename: '[name].[chunkhash].js'
     },
     module: {
         rules: [
@@ -24,14 +31,6 @@ module.exports = {
                 loader: ExtractTextPlugin.extract({
                     use: ['css-loader', 'sass-loader'],
                     fallback: 'style-loader'
-                    // use: ['raw-loader', 'sass-loader'],
-                    // use: [
-                    //     {
-                    //         loader: 'css-loader',
-                    //         options: { url: false }
-                    //     },
-                    //     'sass-loader'
-                    // ],
                   })
             },
             {
@@ -59,6 +58,12 @@ module.exports = {
             // Give paths to parse for rules. These should be absolute!
             paths: glob.sync(path.join(__dirname, 'index.html')),
             minimize: isProduction
+        }),
+
+        new CleanWebpackPlugin(['dist'], {
+            root: __dirname,
+            verbose: true,
+            dry: false
         }),
 
         new webpack.LoaderOptionsPlugin({
