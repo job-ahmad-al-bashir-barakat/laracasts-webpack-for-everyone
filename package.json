@@ -1,0 +1,17 @@
+{
+  "name": "webpack-for-everyone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "npm run build -- --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {}
+}
