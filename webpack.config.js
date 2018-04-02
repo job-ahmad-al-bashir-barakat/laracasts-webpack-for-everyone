@@ -1,7 +1,9 @@
 var webpack = require('webpack');
 var path = require('path');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var isProduction = (process.env.NODE_ENV === 'production');
+var glob = require('glob');
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
+let PurifyCSSPlugin = require('purifycss-webpack');
+let isProduction = (process.env.NODE_ENV === 'production');
 
 
 module.exports = {
@@ -19,8 +21,9 @@ module.exports = {
         rules: [
             {
                 test: /.s[ac]ss$/,
-                use: ExtractTextPlugin.extract({
+                loader: ExtractTextPlugin.extract({
                     use: ['css-loader', 'sass-loader'],
+                    fallback: 'style-loader'
                     // use: ['raw-loader', 'sass-loader'],
                     // use: [
                     //     {
@@ -29,7 +32,6 @@ module.exports = {
                     //     },
                     //     'sass-loader'
                     // ],
-                    fallback: 'style-loader'
                   })
             },
             {
@@ -52,9 +54,16 @@ module.exports = {
     },
     plugins: [
         new ExtractTextPlugin('[name].css'),
+
+        new PurifyCSSPlugin({
+            // Give paths to parse for rules. These should be absolute!
+            paths: glob.sync(path.join(__dirname, 'index.html')),
+            minimize: isProduction
+        }),
+
         new webpack.LoaderOptionsPlugin({
             minimize: isProduction
-        })
+        }),
     ]
 }
 
