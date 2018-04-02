@@ -69,6 +69,16 @@ module.exports = {
         new webpack.LoaderOptionsPlugin({
             minimize: isProduction
         }),
+
+        function () {
+            this.plugin('done', stats => {
+                // require file system
+                require('fs').writeFileSync(
+                    path.join(__dirname, 'dist/manifest.json'),
+                    JSON.stringify(stats.toJson().assetsByChunkName)
+                );
+            });
+        }
     ]
 }
 
